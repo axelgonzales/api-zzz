@@ -11,7 +11,6 @@
 	<groupId>pe.financieraoh.apiseguro</groupId>
 	<artifactId>apiSeguro</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
 	<name>apiSeguro</name>
 	<description>Cancelar seguros Puc</description>
 
@@ -91,31 +90,10 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		
-<!-- 		<dependency> -->
-<!-- 			<groupId> org.springframework.boot </groupId> -->
-<!-- 			<artifactId> spring-boot-starter-tomcat </artifactId> -->
-<!-- 			<scope> proporcionado </scope> -->
-<!-- 		</dependency> -->
+
 		
 	</dependencies>
 
-<!-- 	<repositories> -->
-<!-- 		<repository> -->
-<!-- 			<id>codelds</id> -->
-<!-- 			<url>https://code.lds.org/nexus/content/groups/main-repo</url> -->
-<!-- 		</repository> -->
-<!-- 	</repositories> -->
-<!-- 	<build> -->
-<!-- 		<finalName>${project.artifactId}</finalName> -->
-<!-- 		<plugins> -->
-<!-- 			<plugin> -->
-<!-- 				<groupId>org.springframework.boot</groupId> -->
-<!-- 				<artifactId>spring-boot-maven-plugin</artifactId> -->
-<!-- 			</plugin> -->
-<!-- 		</plugins> -->
-<!-- 	</build> -->
-<!-- 	<packaging>war</packaging> -->
 
 	<build>
 		<plugins>

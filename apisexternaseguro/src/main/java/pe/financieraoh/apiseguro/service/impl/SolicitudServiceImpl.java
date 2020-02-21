@@ -2,6 +2,7 @@ package pe.financieraoh.apiseguro.service.impl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,11 +80,28 @@ public class SolicitudServiceImpl  implements SolicitudService{
 	@Override
 	public void validate(SolicitudRequest solicitudRequest) {
 		
+		validateTypeCodeProduct(solicitudRequest);
+		validateTypeCodeCancel(solicitudRequest);
+		
+		Solicitud solicitud = null;
+		solicitud = validatePoliza(solicitudRequest,solicitud);
+		
+		validateDatePoliza(solicitudRequest.getFecIniVigencia(),solicitudRequest.getCodTipCancelacion(),
+				solicitud.getFecSolicitud(),solicitud.getCodInterno());
+		
+		validatePerson(solicitudRequest, solicitud.getCodInterno());
+	}
+	
+	
+	void validateTypeCodeProduct(SolicitudRequest solicitudRequest){
 		Optional<TipoProducto> resultTipProducto = tipProductoRepository.findById(solicitudRequest.getCodTipProducto());
-						
+		
 		if (!resultTipProducto.isPresent()) {
 			throw new ProductoNotFoundException(solicitudRequest.getCodTipCancelacion() +"");
 		}
+	}
+	
+	void validateTypeCodeCancel(SolicitudRequest solicitudRequest){
 		Optional<TipoCancelacion> resultTipCancelaciuon =  tipoCancelacionRepository.findById(solicitudRequest.getCodTipCancelacion());
 		if (!resultTipCancelaciuon.isPresent()) {
 			throw new TipCancelacionNotFoundException(solicitudRequest.getCodTipCancelacion() +"");
@@ -91,8 +109,18 @@ public class SolicitudServiceImpl  implements SolicitudService{
 		if(resultTipCancelaciuon.get().getCodTipProducto().intValue() != solicitudRequest.getCodTipProducto().intValue()) {
 			throw new TipCancelacionNotFoundException(solicitudRequest.getCodTipCancelacion() +"");
 		}
-		
-		Solicitud solicitud = null;
+	}
+	void validateDatePoliza(String fecIniVigencia, Integer codCancelacion,Date fecSolicitud, String codInterno){
+		DateFormat fechaHora = new SimpleDateFormat("dd/MM/yyyy");
+		String fechaFormat = fechaHora.format(fecSolicitud);
+
+		if (!fechaFormat.equals(fecIniVigencia)) { 
+			throw new PolizaDateNotFoundException(codCancelacion +"");
+		}
+
+	}
+	
+	Solicitud validatePoliza(SolicitudRequest solicitudRequest, Solicitud solicitud) {
 		if (solicitudRequest.getCodTipProducto().intValue() == 1) {
 			Optional<SolicitudPT>  resultSolicitudPt =  solicitudPTRepository.findById(solicitudRequest.getNroSolicitud());
 			if (!resultSolicitudPt.isPresent()) {
@@ -123,18 +151,11 @@ public class SolicitudServiceImpl  implements SolicitudService{
 			}
 		}
 		
-		if(solicitud == null) {
-			throw new NullPointerException();
-		}
-		
-		DateFormat fechaHora = new SimpleDateFormat("dd/MM/yyyy");
-		String fechaFormat = fechaHora.format(solicitud.getFecSolicitud());
-
-		if (!fechaFormat.equals(solicitudRequest.getFecIniVigencia())) { 
-			throw new PolizaDateNotFoundException(solicitudRequest.getCodTipCancelacion() +"");
-		}
-		
-		Optional<Persona> resultPersona =  personaRepository.findById(solicitud.getCodInterno());
+		return solicitud;
+	}
+	
+	void validatePerson(SolicitudRequest solicitudRequest, String codInterno){
+		Optional<Persona> resultPersona =  personaRepository.findById(codInterno );
 		if (!resultPersona.isPresent()) {
 			throw new PersonaNotFoundException(solicitudRequest.getCodTipCancelacion() +"");
 		}
@@ -143,7 +164,5 @@ public class SolicitudServiceImpl  implements SolicitudService{
 			!persona.getTipDocumIde().equals(solicitudRequest.getTipoDocumento())){
 			throw new PersonaNotFoundException(solicitudRequest.getCodTipCancelacion() +"");
 		}
-		
 	}
-
 }
