@@ -26,6 +26,10 @@
 		<wildfly-port>1540</wildfly-port>
 		<wildfly-username>wildfly</wildfly-username>
 		<wildfly-password>Fusa*2019</wildfly-password>
+		<sonar.projectKey>axelgonzales_api-zzz</sonar.projectKey>
+		<sonar.organization>axelgonzales</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		<sonar.login>bce3ce486bc2b592b3ab8f33555a55aec1a95024</sonar.login>
 	</properties>
 
 	<dependencies>
@@ -121,5 +125,6 @@
 			</plugin>
 		</plugins>
 	</build>
+	
 
 </project>
