@@ -2,13 +2,11 @@ package pe.financieraoh.apiseguro.service.impl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.NonNull;
 import pe.financieraoh.apiseguro.constant.Constant;
 import pe.financieraoh.apiseguro.controller.request.SolicitudRequest;
 import pe.financieraoh.apiseguro.domain.Persona;
@@ -54,6 +52,9 @@ public class SolicitudServiceImpl  implements SolicitudService{
 		
 		if (solicitudRequest.getCodTipProducto().intValue() == 1) {
 			Optional<SolicitudPT> resultSolicitud = solicitudPTRepository.findById(solicitudRequest.getNroSolicitud());
+			if (!resultSolicitud.isPresent()) {
+				throw new PolizaNotFoundException(solicitudRequest.getCodTipCancelacion() +"");
+			}
 			SolicitudPT solicitud = resultSolicitud.get();
 			solicitud.setCodTipCancelacion(solicitudRequest.getCodTipCancelacion());
 			solicitud.setFecCancelacion(FechaUtil.parseFecha(solicitudRequest.getFecCancelacion()));
@@ -62,6 +63,9 @@ public class SolicitudServiceImpl  implements SolicitudService{
 			solicitudPTRepository.save(solicitud);
 		}else if(solicitudRequest.getCodTipProducto().intValue() == 2) {
 			Optional<SolicitudOncologico> resultSolicitud = solicitudOncologicoRespository.findById(solicitudRequest.getNroSolicitud());
+			if (!resultSolicitud.isPresent()) {
+				throw new PolizaNotFoundException(solicitudRequest.getCodTipCancelacion() +"");
+			}
 			SolicitudOncologico solicitud = resultSolicitud.get();
 			solicitud.setCodTipCancelacion(solicitudRequest.getCodTipCancelacion());
 			solicitud.setFecCancelacion(FechaUtil.parseFecha(solicitudRequest.getFecCancelacion()));
@@ -118,10 +122,13 @@ public class SolicitudServiceImpl  implements SolicitudService{
 				throw new PolizaCancelException(solicitudRequest.getCodTipCancelacion() +"");
 			}
 		}
-
+		
+		if(solicitud == null) {
+			throw new NullPointerException();
+		}
+		
 		DateFormat fechaHora = new SimpleDateFormat("dd/MM/yyyy");
-		@NonNull Date fechaSolicitud   = solicitud.getFecSolicitud() ;
-		String fechaFormat = fechaHora.format(fechaSolicitud );
+		String fechaFormat = fechaHora.format(solicitud.getFecSolicitud());
 
 		if (!fechaFormat.equals(solicitudRequest.getFecIniVigencia())) { 
 			throw new PolizaDateNotFoundException(solicitudRequest.getCodTipCancelacion() +"");
