@@ -8,6 +8,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class FechaUtil {
 
+	public FechaUtil() {
+	}
+	
 	public static Date parseFecha(String fecha)
     {
         SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");

@@ -2,7 +2,9 @@ package pe.financieraoh.apiseguro.constant;
 
 
 public class Constant {
-	
+
+	public Constant() {
+	}
 	//CÓDIGOS DE RESPUESTA
 	public static final String COD_OKEY= "00";
 	public static final String COD_TIPO_PRODUCTO= "01";
