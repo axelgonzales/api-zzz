@@ -2,11 +2,13 @@ package pe.financieraoh.apiseguro.service.impl;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.NonNull;
 import pe.financieraoh.apiseguro.constant.Constant;
 import pe.financieraoh.apiseguro.controller.request.SolicitudRequest;
 import pe.financieraoh.apiseguro.domain.Persona;
@@ -118,7 +120,8 @@ public class SolicitudServiceImpl  implements SolicitudService{
 		}
 
 		DateFormat fechaHora = new SimpleDateFormat("dd/MM/yyyy");
-		String fechaFormat = fechaHora.format(solicitud.getFecSolicitud());
+		@NonNull Date fechaSolicitud   = solicitud.getFecSolicitud() ;
+		String fechaFormat = fechaHora.format(fechaSolicitud );
 
 		if (!fechaFormat.equals(solicitudRequest.getFecIniVigencia())) { 
 			throw new PolizaDateNotFoundException(solicitudRequest.getCodTipCancelacion() +"");
