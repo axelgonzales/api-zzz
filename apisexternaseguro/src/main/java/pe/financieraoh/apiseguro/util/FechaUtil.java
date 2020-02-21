@@ -3,6 +3,9 @@ package pe.financieraoh.apiseguro.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class FechaUtil {
 
 	public static Date parseFecha(String fecha)
@@ -13,8 +16,7 @@ public class FechaUtil {
             fechaDate = formato.parse(fecha);
         } 
         catch (java.text.ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error(e.getLocalizedMessage());
 		}
         return fechaDate;
     }
