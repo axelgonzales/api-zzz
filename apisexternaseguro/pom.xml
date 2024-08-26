@@ -19,7 +19,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<swagger.version>2.9.2</swagger.version>
-		<swaggerui.version>2.0.1</swaggerui.version>
+		<swaggerui.version>2.10.0</swaggerui.version>
 		<commons-lang3.version>3.6</commons-lang3.version>
 		<wildfly-hostname>127.0.0.1</wildfly-hostname>
 		<wildfly-port>1540</wildfly-port>
